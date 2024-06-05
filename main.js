@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu, Tray, nativeImage } = require('electron')
 const path = require('node:path')
 
 
@@ -20,6 +20,9 @@ const createWindow = () => {
   // mainWindow.webContents.openDevTools()
 }
 
+let tray = null
+
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -32,6 +35,22 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  let iconPathRed = path.join(__dirname , 'assets','red.png')
+  let iconPathGreen = path.join(__dirname , 'assets','green.png')
+  tray = new Tray(iconPathGreen)
+  const contextMenu = Menu.buildFromTemplate([
+    { icon: nativeImage.createFromPath(iconPathGreen), label: 'Verfügbar', type: 'radio', click: () => {tray.setImage(iconPathGreen)} },
+    { icon: nativeImage.createFromPath(iconPathRed),label: 'Bitte nicht stören', type: 'radio', click: () => {tray.setImage(iconPathRed)} }
+  ])
+
+  // Make a change to the context menu
+  contextMenu.items[0].checked = true
+
+  // Call this again for Linux because we modified the context menu
+  tray.setToolTip('This is my application.')
+  tray.setTitle("AAN")
+  tray.setContextMenu(contextMenu)
 
 })
 
