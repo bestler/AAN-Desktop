@@ -1,0 +1,15 @@
+{
+  "name": "aan-desktop",
+  "version": "0.0.1",
+  "description": "Desktop Client for the Ambient Availabilty Notification (AAN)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Simon Bestler",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^30.0.9"
+  }
+}
