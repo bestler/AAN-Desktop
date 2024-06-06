@@ -9,7 +9,8 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: false
     }
   })
 
@@ -17,7 +18,7 @@ const createWindow = () => {
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 }
 
 
@@ -33,6 +34,8 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
+  connectMQTT()
+
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -41,3 +44,22 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
+
+function  connectMQTT(){
+  const mqtt = require('mqtt')
+  const client = mqtt.connect('mqtt://test.mosquitto.org')
+
+  client.on('connect', () => {
+    client.subscribe('presence', (err) => {
+      if (!err) {
+        client.publish('presence', 'Hello mqtt')
+      }
+    })
+  })
+
+  client.on('message', (topic, message) => {
+    // message is Buffer
+    console.log(message.toString())
+    client.end()
+  })
+}
