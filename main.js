@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('node:path')
+const MqttClient = require('./logic/mqttclient');
 
 
 const createWindow = () => {
@@ -21,12 +22,17 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools()
 }
 
+const client = new MqttClient();
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
+  
+  client.connect();
+  client.publish('status', 'red');
 
   app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
@@ -34,7 +40,6 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  connectMQTT()
 
 })
 
@@ -45,21 +50,6 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
-function  connectMQTT(){
-  const mqtt = require('mqtt')
-  const client = mqtt.connect('mqtt://test.mosquitto.org')
-
-  client.on('connect', () => {
-    client.subscribe('presence', (err) => {
-      if (!err) {
-        client.publish('presence', 'Hello mqtt')
-      }
-    })
-  })
-
-  client.on('message', (topic, message) => {
-    // message is Buffer
-    console.log(message.toString())
-    client.end()
-  })
-}
+app.on ('will-quit', () => {
+  client.disconnect();
+})
