@@ -40,12 +40,14 @@ app.whenReady().then(() => {
   let iconPathYellow = path.join(__dirname , 'assets','yellow.png')
   let iconPathRed = path.join(__dirname , 'assets','red.png')
   let iconPathWhite = path.join(__dirname , 'assets','white.png')
-
+  let iconPathPurple = path.join(__dirname , 'assets','purple.png')
+  
   tray = new Tray(iconPathGreen)
   const contextMenu = Menu.buildFromTemplate([
     { icon: nativeImage.createFromPath(iconPathGreen), label: 'Verfügbar', type: 'radio', click: () => {tray.setImage(iconPathGreen)} },
-    { icon: nativeImage.createFromPath(iconPathYellow),label: 'Beschäftigt', type: 'radio', click: () => {tray.setImage(iconPathYellow)} },
-    { icon: nativeImage.createFromPath(iconPathRed),label: 'Bitte nicht stören', type: 'radio', click: () => {tray.setImage(iconPathRed)} },
+    { icon: nativeImage.createFromPath(iconPathYellow),label: 'Abwesend', type: 'radio', click: () => {tray.setImage(iconPathYellow)} },
+    { icon: nativeImage.createFromPath(iconPathRed),label: 'Bitte nicht stören/Beschäftigt', type: 'radio', click: () => {tray.setImage(iconPathRed)} },
+    { icon: nativeImage.createFromPath(iconPathPurple),label: 'Kaffeepause', type: 'radio', click: () => {tray.setImage(iconPathPurple)} },
     { icon: nativeImage.createFromPath(iconPathWhite),label: 'kein Status', type: 'radio', click: () => {tray.setImage(iconPathWhite)} },
   ])
 
