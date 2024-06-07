@@ -36,12 +36,17 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  let iconPathRed = path.join(__dirname , 'assets','red.png')
   let iconPathGreen = path.join(__dirname , 'assets','green.png')
+  let iconPathYellow = path.join(__dirname , 'assets','yellow.png')
+  let iconPathRed = path.join(__dirname , 'assets','red.png')
+  let iconPathWhite = path.join(__dirname , 'assets','white.png')
+
   tray = new Tray(iconPathGreen)
   const contextMenu = Menu.buildFromTemplate([
     { icon: nativeImage.createFromPath(iconPathGreen), label: 'Verfügbar', type: 'radio', click: () => {tray.setImage(iconPathGreen)} },
-    { icon: nativeImage.createFromPath(iconPathRed),label: 'Bitte nicht stören', type: 'radio', click: () => {tray.setImage(iconPathRed)} }
+    { icon: nativeImage.createFromPath(iconPathYellow),label: 'Beschäftigt', type: 'radio', click: () => {tray.setImage(iconPathYellow)} },
+    { icon: nativeImage.createFromPath(iconPathRed),label: 'Bitte nicht stören', type: 'radio', click: () => {tray.setImage(iconPathRed)} },
+    { icon: nativeImage.createFromPath(iconPathWhite),label: 'kein Status', type: 'radio', click: () => {tray.setImage(iconPathWhite)} },
   ])
 
   // Make a change to the context menu
@@ -49,7 +54,7 @@ app.whenReady().then(() => {
 
   // Call this again for Linux because we modified the context menu
   tray.setToolTip('This is my application.')
-  tray.setTitle("AAN")
+  //tray.setTitle("AAN")
   tray.setContextMenu(contextMenu)
 
 })
