@@ -11,5 +11,8 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^30.0.9"
+  },
+  "dependencies": {
+    "mqtt": "^5.7.0"
   }
 }
