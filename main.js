@@ -2,7 +2,11 @@
 const { app, BrowserWindow, Menu, Tray, nativeImage } = require('electron')
 const path = require('node:path')
 const MqttClient = require('./logic/mqttclient');
+const Status = require('./model/status');
 
+const client = new MqttClient();
+
+let currentStatus = Status.getAllStatus()[0]
 
 const createWindow = () => {
   // Create the browser window.
@@ -22,19 +26,41 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools()
 }
 
-const client = new MqttClient();
+const createTray = () => {
+  
+  const defaultStatus = Status.getAllStatusMap().get('green')
+  tray = new Tray(defaultStatus.getIconPath())
+  const contextMenu = Menu.buildFromTemplate(Status.getAllStatus().map(status => {
+    return {
+      label: status.name,
+      icon: nativeImage.createFromPath(status.getIconPath()),
+      type: 'radio',
+      click: () => handleClickTay(status)
+    }
+  }))
+  
+  // Set default to first status
+  contextMenu.items[0].checked = true
+  tray.setContextMenu(contextMenu)
+
+  // Removed because only working on macOS
+  //tray.setTitle("AAN")
+
+  return tray
+}
+
+
 let tray = null
-
-
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  
   createWindow()
+  tray = createTray()
   
   client.connect();
-  client.publish('status', 'red');
 
   app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
@@ -42,30 +68,22 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  let iconPathGreen = path.join(__dirname , 'assets','green.png')
-  let iconPathYellow = path.join(__dirname , 'assets','yellow.png')
-  let iconPathRed = path.join(__dirname , 'assets','red.png')
-  let iconPathWhite = path.join(__dirname , 'assets','white.png')
-  let iconPathPurple = path.join(__dirname , 'assets','purple.png')
-  
-  tray = new Tray(iconPathGreen)
-  const contextMenu = Menu.buildFromTemplate([
-    { icon: nativeImage.createFromPath(iconPathGreen), label: 'Verfügbar', type: 'radio', click: () => {tray.setImage(iconPathGreen)} },
-    { icon: nativeImage.createFromPath(iconPathYellow),label: 'Abwesend', type: 'radio', click: () => {tray.setImage(iconPathYellow)} },
-    { icon: nativeImage.createFromPath(iconPathRed),label: 'Bitte nicht stören/Beschäftigt', type: 'radio', click: () => {tray.setImage(iconPathRed)} },
-    { icon: nativeImage.createFromPath(iconPathPurple),label: 'Kaffeepause', type: 'radio', click: () => {tray.setImage(iconPathPurple)} },
-    { icon: nativeImage.createFromPath(iconPathWhite),label: 'kein Status', type: 'radio', click: () => {tray.setImage(iconPathWhite)} },
-  ])
 
-  // Make a change to the context menu
-  contextMenu.items[0].checked = true
+  //Resend status every 10 seconds
+  setInterval(resendStatus, 10000)
 
-  // Call this again for Linux because we modified the context menu
-  tray.setToolTip('This is my application.')
-  //tray.setTitle("AAN")
-  tray.setContextMenu(contextMenu)
+}
+)
 
-})
+function resendStatus() {
+  client.publish('70419_1', String(currentStatus.code + 10));
+}
+
+function handleClickTay(status) {
+  client.publish('70419_1', String(status.code + 10))
+  tray.setImage(status.getIconPath())
+  currentStatus = status
+}
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
