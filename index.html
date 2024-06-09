@@ -1,19 +1,61 @@
-<!--index.html-->
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="de">
+<head>
     <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambient Availability Notification (AAN)</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Ambient Availability Notification (AAN)</h1>
+        <h2>Einstellungen</h2>
+        <form id="deviceForm">
+            <label for="deviceNumber">Gerätenummer</label>
+            <input type="text" id="deviceNumber" name="deviceNumber" required>
+            
+            <button type="submit">Gerätenummer senden</button>
 
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
-  </body>
+            <label for="statusDisplay">Status anzeigen</label>
+            <select id="statusDisplay" name="statusDisplay" required>
+                <option value="always">Die ganze Zeit</option>
+                <option value="approach">Wenn sich jemand nähert</option>
+            </select>
+            
+            <button type="button" onclick="connectToTeams()">Mit Microsoft Teams verbinden</button>
+        </form>
+        <button id="helpBtn">Hilfe anzeigen</button>
+
+        <div id="helpSection" class="hidden">
+            <h2>Hilfeinformationen</h2>
+            <p>Geben Sie Ihre Gerätenummer ein, um sich anzumelden, und wählen Sie, wie Sie Ihren Verfügbarkeitsstatus anzeigen möchten. Sie können wählen, ob Ihr Status die ganze Zeit oder nur angezeigt werden soll, wenn sich jemand Ihrer Bürotür nähert. Klicken Sie auf "Mit Microsoft Teams verbinden", um Ihren Verfügbarkeitsstatus mit Teams zu synchronisieren.</p>
+        </div>
+    </div>
+
+    <script>
+        function connectToTeams() {
+            alert('Mit Microsoft Teams verbinden...');
+            // Hier können Sie den Code zum Verbinden mit der Microsoft Teams API hinzufügen
+        }
+
+        // Toggle help section visibility
+        document.getElementById("helpBtn").addEventListener("click", function() {
+            var helpSection = document.getElementById("helpSection");
+            if (helpSection.classList.contains('hidden')) {
+                helpSection.classList.remove('hidden');
+                this.innerText = "Hilfe ausblenden";
+            } else {
+                helpSection.classList.add('hidden');
+                this.innerText = "Hilfe anzeigen";
+            }
+        });
+
+        // Handle form submission
+        document.getElementById("deviceForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert('Gerätenummer gesendet: ' + document.getElementById("deviceNumber").value);
+            // Fügen Sie hier die Logik zum Senden der Gerätenummer hinzu
+        });
+    </script>
+</body>
 </html>

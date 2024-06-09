@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.container h2 {
+    margin-bottom: 20px;
+}
+
+.container label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.container input[type="text"], .container select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.container button {
+    background-color: #0078d4;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+}
+
+.container button:hover {
+    background-color: #005a9e;
+}
+
+/* Help button styling */
+#helpBtn {
+    background-color: #f0ad4e;
+    margin-top: 10px;
+}
+
+#helpBtn:hover {
+    background-color: #ec971f;
+}
+
+/* Help section styling */
+.hidden {
+    display: none;
+}
+
+#helpSection {
+    margin-top: 20px;
+    text-align: left;
+}
+
+#helpSection h2 {
+    margin-top: 0;
+}
