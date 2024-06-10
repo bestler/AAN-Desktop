@@ -30,14 +30,19 @@ const createTray = () => {
   
   const defaultStatus = Status.getAllStatusMap().get('green')
   tray = new Tray(defaultStatus.getIconPath())
-  const contextMenu = Menu.buildFromTemplate(Status.getAllStatus().map(status => {
+  let menuItems = Status.getAllStatus().map(status => {
     return {
       label: status.name,
       icon: nativeImage.createFromPath(status.getIconPath()),
       type: 'radio',
       click: () => handleClickTay(status)
     }
-  }))
+  })
+
+  menuItems.push({type: 'separator'})
+  menuItems.push({label: 'Quit', role: 'quit'})
+
+  const contextMenu = Menu.buildFromTemplate(menuItems)
   
   // Set default to first status
   contextMenu.items[0].checked = true
