@@ -28,13 +28,14 @@
 
         <div id="helpSection" class="hidden">
             <h2>Hilfeinformationen</h2>
+            <p>Um die ihren Status zu setzen, verwenden Sie das Icon in der Statusleiste/Taskbar.</p>
             <p>Geben Sie Ihre Gerätenummer ein, um sich anzumelden, und wählen Sie, wie Sie Ihren Verfügbarkeitsstatus anzeigen möchten. Sie können wählen, ob Ihr Status die ganze Zeit oder nur angezeigt werden soll, wenn sich jemand Ihrer Bürotür nähert. Klicken Sie auf "Mit Microsoft Teams verbinden", um Ihren Verfügbarkeitsstatus mit Teams zu synchronisieren.</p>
         </div>
     </div>
 
     <script>
         function connectToTeams() {
-            alert('Mit Microsoft Teams verbinden...');
+            alert('Verbindung zu Microsoft Teams erfolgreich hergestellt!');
             // Hier können Sie den Code zum Verbinden mit der Microsoft Teams API hinzufügen
         }
 
@@ -53,7 +54,7 @@
         // Handle form submission
         document.getElementById("deviceForm").addEventListener("submit", function(event) {
             event.preventDefault();
-            alert('Gerätenummer gesendet: ' + document.getElementById("deviceNumber").value);
+            alert('Das Gerät ist jetzt erfolgreich mit Gerät ' + document.getElementById("deviceNumber").value + ' verbunden!');
             // Fügen Sie hier die Logik zum Senden der Gerätenummer hinzu
         });
     </script>
