@@ -43,6 +43,19 @@ const createTray = () => {
   menuItems.push({label: 'Quit', role: 'quit'})
 
   const contextMenu = Menu.buildFromTemplate(menuItems)
+
+  //Needed for correct behavior on Windows
+
+  tray.on('click', (event, bounds) => {
+    tray.popUpContextMenu(contextMenu, bounds);
+  });
+
+  tray.on('right-click', () => {
+    tray.popUpContextMenu(contextMenu);
+  });
+
+  tray.setToolTip('AAN - Klicken Sie hier, um Ihren Status einzustellen.')
+
   
   // Set default to first status
   contextMenu.items[0].checked = true
